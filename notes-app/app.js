@@ -30,8 +30,15 @@ yargs.command({
 yargs.command({
   command: "remove",
   describe: "Remove a note",
-  handler: function() {
-    console.log("Removing a note");
+  builder: {
+    title: {
+      describe: "Note title",
+      demandOption: true,
+      type: "string"
+    }
+  },
+  handler: function(argv) {
+    notes.removeNote(argv.title)
   }
 });
 
@@ -40,7 +47,7 @@ yargs.command({
   command: "list",
   describe: "Returns a list of notes",
   handler: function() {
-    console.log("Listing notes");
+    console.log("Display list of notes")
   }
 });
 

@@ -17,12 +17,26 @@ const addNote = function(title, body) {
       body: body
     });
     saveNotes(notes);
-    console.log("Note added")
+    console.log(chalk.bgGreen.white("Note added"))
   } else {
-    console.log(chalk.red("ERROR") + " Title already taken")
+    console.log(chalk.bgRed.white("ERROR") + chalk.red(" Title already taken"))
   }
 
 };
+
+const removeNote = function(title) {
+  const notes = loadNotes();
+  const notesToKeep = notes.filter(function (note) {
+    return note.title !== title
+  })
+
+  if (notes.length === notesToKeep.length) {
+    console.log(chalk.bgRed.white("ERROR") + chalk.red(" Title not found"))
+  } else {
+    saveNotes(notesToKeep)
+    console.log(chalk.bgGreen.white("Note removed"))
+  }
+}
 
 const loadNotes = function() {
   try {
@@ -41,5 +55,6 @@ const saveNotes = function(notes) {
 
 module.exports = {
   getNotes: getNotes,
-  addNote: addNote
+  addNote: addNote,
+  removeNote: removeNote
 };
