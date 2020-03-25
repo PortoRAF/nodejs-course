@@ -1,44 +1,54 @@
 const fs = require("fs");
-const chalk = require('chalk')
+const chalk = require("chalk");
 
-const getNotes = function() {
-  return "Your notes...";
+const getNotes = () => {
+  const notes = loadNotes();
+  console.log(chalk.bgWhite.black("     YOUR NOTES     "));
+  notes.forEach(note => console.log(chalk.bold("Note: ") + note.title));
 };
 
-const addNote = function(title, body) {
+const addNote = (title, body) => {
   const notes = loadNotes();
-  const duplicateNotes = notes.filter(function (note) {
-    return note.title === title
-  })
+  const duplicateNote = notes.find(note => note.title === title);
 
-  if (duplicateNotes.length === 0) {
+  if (!duplicateNote) {
     notes.push({
       title: title,
       body: body
     });
     saveNotes(notes);
-    console.log(chalk.bgGreen.white("Note added"))
+    console.log(chalk.bgGreen.white("Note added"));
   } else {
-    console.log(chalk.bgRed.white("ERROR") + chalk.red(" Title already taken"))
+    console.log(chalk.bgRed.white("ERROR") + chalk.red(" Title already taken"));
   }
-
 };
 
-const removeNote = function(title) {
+const removeNote = title => {
   const notes = loadNotes();
-  const notesToKeep = notes.filter(function (note) {
-    return note.title !== title
-  })
+  const notesToKeep = notes.filter(note => note.title !== title);
 
   if (notes.length === notesToKeep.length) {
-    console.log(chalk.bgRed.white("ERROR") + chalk.red(" Title not found"))
+    console.log(chalk.bgRed.white("ERROR") + chalk.red(" Title not found"));
   } else {
-    saveNotes(notesToKeep)
-    console.log(chalk.bgGreen.white("Note removed"))
+    saveNotes(notesToKeep);
+    console.log(chalk.bgGreen.white("Note removed"));
   }
-}
+};
 
-const loadNotes = function() {
+const readNote = title => {
+  const notes = loadNotes();
+  const noteToRead = notes.find(note => note.title === title);
+
+  if (noteToRead) {
+    console.log(chalk.inverse("        NOTE        "));
+    console.log(chalk.bold("Note: ") + noteToRead.title);
+    console.log(chalk.bold("Description: ") + noteToRead.body);
+  } else {
+    console.log(chalk.bgRed.white("ERROR") + chalk.red(" Title not found"));
+  }
+};
+
+const loadNotes = () => {
   try {
     const dataBuffer = fs.readFileSync("notes.json");
     const dataJSON = dataBuffer.toString();
@@ -48,7 +58,7 @@ const loadNotes = function() {
   }
 };
 
-const saveNotes = function(notes) {
+const saveNotes = notes => {
   const dataJSON = JSON.stringify(notes);
   fs.writeFileSync("notes.json", dataJSON);
 };
@@ -56,5 +66,6 @@ const saveNotes = function(notes) {
 module.exports = {
   getNotes: getNotes,
   addNote: addNote,
-  removeNote: removeNote
+  removeNote: removeNote,
+  readNote: readNote
 };
