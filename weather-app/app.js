@@ -1,0 +1,19 @@
+const request = require("request");
+
+const apiUrl = "https://api.darksky.net/forecast/";
+const apiKey = "ba6767b45e917880e905658425f510d4";
+const location = "-19.9876,-43.8463";
+const unitOption = "units=auto"
+const languageOption = "lang=pt"
+
+const url = apiUrl + apiKey + "/" + location + "?" + unitOption + "&" + languageOption;
+
+request({ url: url, json: true }, (error, response) => {
+  const temperature = response.body.currently.temperature;
+  const precipProbability = response.body.currently.precipProbability;
+  console.log(response.body.daily.data[0].summary)
+  console.log("It is currently " + temperature + " degrees out.");
+  console.log("There is a " + precipProbability + "% chance of rain.");
+});
+
+const fToC = fTemp => ((fTemp - 32) * 5) / 9;
