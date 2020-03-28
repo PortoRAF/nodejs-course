@@ -10,6 +10,10 @@ body {
   min-height: 100vh;
 }
 
+.main-content {
+  flex-grow: 1;
+}
+
 footer {
   color: #888888;
   border-top: 1px solid #eeeeee;
@@ -37,6 +41,15 @@ header a {
   width: 250px;
 }
 
-.main-content {
-  flex-grow: 1;
+input {
+  border: 1px solid #cccccc;
+  padding: 8px;
+}
+
+button {
+  cursor: pointer;
+  border: 1px solid #888888;
+  background: #888888;
+  color: white;
+  padding: 8px;
 }
