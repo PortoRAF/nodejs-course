@@ -10,13 +10,23 @@ weatherForm.addEventListener("submit", e => {
   messageOne.textContent = "Loading...";
   messageTwo.textContent = "";
 
-  fetch("http://localhost:3000/weather?address=" + location).then(response => {
-    response.json().then(data => {
-      if (data.error) {
-        messageOne.textContent = data.error;
+  fetch("/weather?address=" + location).then(response => {
+    response.json().then(({ error, location, forecast }) => {
+      if (error) {
+        messageOne.textContent = error;
       } else {
-        messageOne.textContent = data.forecast;
-        messageTwo.textContent = data.location;
+        messageOne.textContent = location;
+        messageTwo.textContent =
+          forecast.summaryDaily +
+          " It is currently " +
+          forecast.temperature +
+          " degrees out. High for today is " +
+          forecast.temperatureHigh +
+          " with a low of " +
+          forecast.temperatureLow +
+          ". There is a " +
+          forecast.precipProbability +
+          "% change of rain.";
       }
     });
   });
